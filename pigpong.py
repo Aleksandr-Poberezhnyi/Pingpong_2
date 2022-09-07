@@ -1,7 +1,8 @@
 from pygame import *
-
+speed_x = 3
+speed_y = 3
 class GameSprite(sprite.Sprite):
-    def __init__(self,player_image,player_x,player_y,width,height):
+    def __init__(self,player_image,player_x,player_y,player_speed,width,height):
         super().__init__()
         
         self.image = transform.scale(image.load(player_image), (width,height))
@@ -10,8 +11,9 @@ class GameSprite(sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player_x
         self.rect.y = player_y
+
     def reset(self):
-        win.blit(self.image,(self.rect.x,self.rect.y))
+        window.blit(self.image,(self.rect.x,self.rect.y))
         
 class Player(GameSprite):
     def update_r(self):
@@ -42,7 +44,7 @@ FPS = 60
 #Создание мяча и ракетки
 racket1 = Player('racket.png', 30, 200, 4, 50, 150) #При создании спрайта добавляться ещё два параметра
 racket2 = Player('racket.png', 520, 200, 4, 50, 150)
-ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 150)
+ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
 
 font.init()
 font =font.Font('calibri.ttf', 35)
@@ -51,12 +53,12 @@ lose2 = font.render('PLAYER 2 LOSE!', True, (180, 0, 0))
         
 while game:
     for e in event.get():
-        if e.type == quit:
-            GAME = False
+        if e.type == QUIT:
+            game = False
     if finish != True:
         window.fill(back)
         racket1.update_r()
-        racket.update_l()
+        racket2.update_l()
         ball.rect.x += speed_x 
         ball.rect.y += speed_y 
         if sprite.collide_rect(racket1, ball) or sprite.collide_rect(racket2, ball):
